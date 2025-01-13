@@ -22,7 +22,7 @@ class LLMAdapter:
         llm_name (str or List[str])     : Name of the LLMs. If a string is
                                           provided, then only one LLM will be
                                           activated.
-        max_gpu_memory (dict, optional) : Maximum GPU resources that can be 
+        max_gpu_memory (dict, optional) : Maximum GPU resources that can be
                                           allocated to the LLMs.
         eval_device (str, optional)     : Evaluation device of binding LLM to
                                           designated devices for inference.
@@ -30,7 +30,7 @@ class LLMAdapter:
                                           LLM. Defaults to 256.
         log_mode (str, optional)        : Mode of logging the LLM processing
                                           status. Defaults to "console".
-        llm_backend (str, optional)     : Backend to use for speeding up 
+        llm_backend (str, optional)     : Backend to use for speeding up
                                           open-source LLMs. Defaults to None.
                                           Choices are ["vllm", "ollama"]
     """
@@ -49,7 +49,7 @@ class LLMAdapter:
         api_key: str | list[str] | None = None,
     ):
         """Initialize the LLM with the specified configuration.
-        
+
         Args:
             llm_name            : Name of the LLM model to use
             max_gpu_memory      : Maximum GPU memory allocation per device
@@ -76,7 +76,7 @@ class LLMAdapter:
         self.log_mode            = log_mode
         self.llm_backend         = llm_backend if isinstance(llm_backend, list) else [llm_backend]
         self.context_manager     = SimpleContextManager() if use_context_manager else None
-        
+
 
         # Set all supported API keys
         api_providers = {
@@ -86,11 +86,11 @@ class LLMAdapter:
             "anthropic": "ANTHROPIC_API_KEY",
             "huggingface": "HF_AUTH_TOKEN"
         }
-        
+
         print("\n=== LLMAdapter Initialization ===")
         print(f"Initializing LLM with name: {llm_name}")
         print(f"Backend: {llm_backend}")
-        
+
         # Prioritize getting API keys from config and set them to environment variables
         for provider, env_var in api_providers.items():
             print(f"\nChecking {provider} API key:")
@@ -110,7 +110,7 @@ class LLMAdapter:
                     print(f"- Not found in config.yaml or environment variables")
 
         # breakpoint()
-        
+
         # Format model names to match backend or instantiate local backends
         for idx in range(len(self.llm_name)):
             if self.llm_backend[idx] is None:
@@ -120,7 +120,7 @@ class LLMAdapter:
                 case "hflocal":
                     if "HUGGING_FACE_API_KEY" not in os.environ:
                         raise ValueError("HUGGING_FACE_API_KEY not found in config or environment variables")
-                    
+
                     self.llm_name[idx] = HfLocalBackend(
                         self.llm_name[idx],
                         max_gpu_memory=max_gpu_memory,
@@ -142,19 +142,19 @@ class LLMAdapter:
                 case _:
                     if self.llm_backend[idx] == "google":
                         self.llm_backend[idx] = "gemini"
-                        
+
                     # Google backwards compatibility fix
-                    
+
                     prefix = self.llm_backend[idx] + "/"
                     is_formatted = self.llm_name[idx].startswith(prefix)
-                    
+
                     # if not is_formatted:
                     # self.llm_name[idx] = "gemini/" + self.llm_name[idx].split("/")[1]
                     # continue
-                    
+
                     if not is_formatted:
                         self.llm_name[idx] = prefix + self.llm_name[idx]
-        
+
         if strategy == RouterStrategy.SIMPLE:
             self.strategy = SimpleStrategy(self.llm_name)
 
@@ -182,7 +182,7 @@ class LLMAdapter:
         for message in messages:
             if "tool_calls" in message:
                 message["content"] = json.dumps(message.pop("tool_calls"))
-                
+
             elif message["role"] == "tool":
                 message["role"] = "user"
                 tool_call_id = message.pop("tool_call_id")
@@ -230,16 +230,16 @@ class LLMAdapter:
         # tool_calls = json.loads(message)
         if isinstance(tool_calls, dict):
             tool_calls = [tool_calls]
-            
+
         for tool_call in tool_calls:
             tool_call["id"] = generator_tool_call_id()
             # if "function" in tool_call:
-            
+
             # else:
             tool_call["name"] = tool_call["name"].replace("__", "/")
             # tool_call["type"] = "function"
         return tool_calls
-    
+
     def pre_process_tools(self, tools):
         for tool in tools:
             tool_name = tool["function"]["name"]
@@ -247,7 +247,7 @@ class LLMAdapter:
                 tool_name = "__".join(tool_name.split("/"))
                 tool["function"]["name"] = tool_name
         return tools
-    
+
     def address_syscall(
         self,
         llm_syscall,
@@ -270,7 +270,7 @@ class LLMAdapter:
         llm_syscall.set_start_time(time.time())
 
         restored_context = None
-                
+
         if self.context_manager:
             pid = llm_syscall.get_pid()
             if self.context_manager.check_restoration(pid):

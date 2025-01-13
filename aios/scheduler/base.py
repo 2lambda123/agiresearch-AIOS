@@ -65,11 +65,11 @@ class Scheduler:
     @abstractmethod
     def run_llm_syscall(self):
         pass
-    
+
     @abstractmethod
     def run_memory_syscall(self):
         pass
-    
+
     @abstractmethod
     def run_storage_syscall(self):
         pass

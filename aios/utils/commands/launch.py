@@ -14,7 +14,7 @@ def show_available_api_keys():
 
 def handle_env_command(args):
     env_file = os.path.expanduser("~/.aios-1/.env")
-    
+
     if args.env_command in ["list", "set"]:
         if os.path.exists(env_file) and os.path.getsize(env_file) > 0:
             print("Current environment variables:")
@@ -25,11 +25,11 @@ def handle_env_command(args):
                         print(f"{name}=****")
         else:
             show_available_api_keys()
-            
+
         if args.env_command == "set" and args.key and args.value:
             # Create directory if it doesn't exist
             os.makedirs(os.path.dirname(env_file), exist_ok=True)
-            
+
             # Read existing variables
             env_vars = {}
             if os.path.exists(env_file):
@@ -38,10 +38,10 @@ def handle_env_command(args):
                         if '=' in line:
                             k, v = line.strip().split('=', 1)
                             env_vars[k] = v
-            
+
             # Update or add new variable
             env_vars[args.key] = args.value
-            
+
             # Write back to file
             with open(env_file, 'w') as f:
                 for k, v in env_vars.items():
@@ -57,15 +57,15 @@ def handle_refresh_command():
     """Handle configuration refresh command"""
     try:
         print("\n=== AIOS Configuration ===")
-        
+
         # Refresh configuration
         config.refresh()
-        
+
         # Get server URL from config
         host = config.config.get('server', {}).get('host', 'localhost')
         port = config.config.get('server', {}).get('port', 8000)
         server_url = f"http://{host}:{port}"
-        
+
         # Display current API key status (masked)
         print("\nAPI Keys Status:")
         for provider, key in config.config.get('api_keys', {}).items():
@@ -83,7 +83,7 @@ def handle_refresh_command():
                     print(f"- {provider}: {masked_key}")
                 else:
                     print(f"- {provider}: [NOT SET]")
-        
+
         # Notify kernel to refresh configuration
         try:
             response = requests.post(
@@ -100,7 +100,7 @@ def handle_refresh_command():
             print("To start the kernel, run: python runtime/launch_kernel.py start")
         except Exception as e:
             print(f"\n❌ Error communicating with kernel: {str(e)}")
-            
+
     except Exception as e:
         print(f"❌ Error refreshing configuration: {e}")
 

@@ -75,4 +75,3 @@ class Syscall(Thread):
     def run(self):
         self.set_pid(self.native_id)
         self.event.wait()
-

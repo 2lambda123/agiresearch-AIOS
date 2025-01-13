@@ -12,7 +12,7 @@ class HfLocalBackend:
         print(f"Checking HF API key:")
         print(f"HUGGING_FACE_API_KEY in env: {'Yes' if 'HUGGING_FACE_API_KEY' in os.environ else 'No'}")
         print(f"HF_AUTH_TOKEN in env: {'Yes' if 'HF_AUTH_TOKEN' in os.environ else 'No'}")
-        
+
         self.model_name = model_name
         self.device = device
         self.max_gpu_memory = max_gpu_memory
@@ -22,7 +22,7 @@ class HfLocalBackend:
         # Therefore, do not start the AIOS-based HF instance.
         if self.hostname is not None:
             return
-        
+
         self.model = AutoModelForCausalLM.from_pretrained(
             model_name,
             device_map=device,
@@ -43,7 +43,7 @@ class HfLocalBackend:
             temperature=temperature,
             api_base=self.hostname,
         ).choices[0].message.content
-    
+
     def __call__(
         self,
         messages,
@@ -52,7 +52,7 @@ class HfLocalBackend:
     ):
         if self.hostname is not None:
             return self.inference_online(messages, temperature, stream=stream)
-        
+
         if stream:
             raise NotImplemented
 
@@ -81,7 +81,7 @@ class VLLMLocalBackend:
     def __init__(self, model_name, device="auto", max_gpu_memory=None, hostname=None):
         print("\n=== VLLMLocalBackend Initialization ===")
         print(f"Model name: {model_name}")
-        
+
         self.model_name = model_name
         self.device = device
         self.max_gpu_memory = max_gpu_memory
@@ -102,7 +102,7 @@ class VLLMLocalBackend:
             )
             self.tokenizer = AutoTokenizer.from_pretrained(model_name)
             self.sampling_params = vllm.SamplingParams(temperature=temperature)
-            
+
         except ImportError:
             raise ImportError("Could not import vllm Python package"
                               "Please install it with `pip install python`")
@@ -126,7 +126,7 @@ class VLLMLocalBackend:
     ):
         if self.hostname is not None:
             return self.inference_online(messages, temperature, stream=stream)
-        
+
         assert self.model
         assert self.sampling_params
         # breakpoint()
@@ -146,10 +146,10 @@ class OllamaBackend:
         print("\n=== OllamaBackend Initialization ===")
         print(f"Model name: {model_name}")
         print(f"Hostname: {hostname or 'http://localhost:11434'}")
-        
+
         self.model_name = model_name
         self.hostname = hostname or "http://localhost:11434"
-        
+
     def __call__(
         self,
         messages,

@@ -18,18 +18,18 @@ AIOS is the AI Agent Operating System, which embeds large language model (LLM) i
 </p>
 
 The AIOS system is comprised of two key components: the AIOS kernel and the AIOS SDK.
-The AIOS kernel acts as an abstraction layer over the operating system kernel, managing various resources that agents require, such as LLM, memory, storage and tool. 
+The AIOS kernel acts as an abstraction layer over the operating system kernel, managing various resources that agents require, such as LLM, memory, storage and tool.
 The AIOS SDK is designed for agent users and developers, enabling them to build and run agent applications by interacting with the AIOS kernel.
 AIOS kernel is the current repository and AIOS SDK can be found at [here](https://github.com/agiresearch/Cerebrum)
 
 ### Modules and Connections
-Below shows how agents utilize AIOS SDK to interact with AIOS kernel and how AIOS kernel receives agent queries and leverage the chain of syscalls that are scheduled and dispatched to run in different modules. 
+Below shows how agents utilize AIOS SDK to interact with AIOS kernel and how AIOS kernel receives agent queries and leverage the chain of syscalls that are scheduled and dispatched to run in different modules.
 <p align="center">
 <img src="docs/assets/aios-figs/details.png">
 </p>
 
 ## 📰 News
-- **[2024-11-30]** 🔥 AIOS v0.2: Disentangled AIOS Kernel (this [AIOS](https://github.com/agiresearch/AIOS) repository) and AIOS SDK (The [Cerebrum](https://github.com/agiresearch/Cerebrum) repository), Remote Kernel for agent users. 
+- **[2024-11-30]** 🔥 AIOS v0.2: Disentangled AIOS Kernel (this [AIOS](https://github.com/agiresearch/AIOS) repository) and AIOS SDK (The [Cerebrum](https://github.com/agiresearch/Cerebrum) repository), Remote Kernel for agent users.
 - **[2024-09-01]** 🔥 AIOS supports multiple agent creation frameworks (e.g., ReAct, Reflexion, OpenAGI, AutoGen, Open Interpreter, MetaGPT). Agents created by these frameworks can onboard AIOS. Onboarding guidelines can be found at the [Doc](https://docs.aios.foundation/aios-docs/aios-agent/how-to-develop-agents).
 - **[2024-07-10]** 📖 AIOS documentation is up, which can be found at [Website](https://docs.aios.foundation/).
 - **[2024-06-20]** 🔥 Function calling for open-sourced LLMs (native huggingface, vLLM, ollama) is supported.
@@ -42,7 +42,7 @@ Below shows how agents utilize AIOS SDK to interact with AIOS kernel and how AIO
 - **[2023-12-06]** 📋 After several months of working, our perspective paper [LLM as OS, Agents as Apps: Envisioning AIOS, Agents and the AIOS-Agent Ecosystem](https://arxiv.org/abs/2312.03815) is officially released.
 
 ## Different deployment modes of AIOS
-Here are some key notations that are required to know before introducing the different modes of AIOS. 
+Here are some key notations that are required to know before introducing the different modes of AIOS.
 - **AHM (Agent Hub Machine)**: Central server that hosts the agent marketplace/repository where users can publish, download, and share agents. Acts as the distribution center for all agent-related resources.
 - **AUM (Agent UI Machine)**: Client machine that provides user interface for interacting with agents. Can be any device from mobile phones to desktops that supports agent visualization and control.
 - **ADM (Agent Development Machine)**: Development environment where agent developers write, debug and test their agents. Requires proper development tools and libraries.
@@ -57,7 +57,7 @@ The following parts introduce different modes of deploying AIOS. **Currently, AI
 </p>
 
 - Features:
-  - For agent users: They can download agents from agent hub from Machine B and run agents on Machine A. 
+  - For agent users: They can download agents from agent hub from Machine B and run agents on Machine A.
   - For agent developers: They can develop and test agents in Machine A and can upload agents to agent hub on Machine B.
 
 ### Mode 2 (Remote Kernel Mode)
@@ -66,8 +66,8 @@ The following parts introduce different modes of deploying AIOS. **Currently, AI
 <img src="docs/assets/aios-figs/stage2.png" width=300>
 </p>
 
-- Features: 
-  - Remote use of agents: Agent users / developers can use agents on Machine B, which is different from the development and running machine (Machine A).  
+- Features:
+  - Remote use of agents: Agent users / developers can use agents on Machine B, which is different from the development and running machine (Machine A).
   - Benefit users who would like to use agents on resource-restricted machine (e.g., mobile device or edge device)
 
 ### Mode 2.5 (Remote Kernel Dev Mode)
@@ -125,7 +125,7 @@ Please see our ongoing [documentation](https://docs.aios.foundation/) for more i
 You need API keys for services like OpenAI, Anthropic, Groq and HuggingFace. The simplest way to configure them is to edit the aios/config/config.yaml.
 
 > [!TIP]
-> It is important to mention that, we stronglyrecommend using the `aios/config/config.yaml` file to set up your API keys. This method is straightforward and helps avoid potential sychronization issues with environment variables. 
+> It is important to mention that, we stronglyrecommend using the `aios/config/config.yaml` file to set up your API keys. This method is straightforward and helps avoid potential sychronization issues with environment variables.
 
 A simple example to set up your API keys in `aios/config/config.yaml` is shown below:
 ```yaml

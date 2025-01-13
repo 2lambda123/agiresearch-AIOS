@@ -36,7 +36,7 @@ def useFactory(
 
             if agent_name.count('/') >= 3:
                 is_local = True
-            
+
             try:
                 author, name, version = manager.download_agent(
                     author=agent_name.split('/')[0],
@@ -45,7 +45,7 @@ def useFactory(
 
             except:
                 is_local = True
-                
+
             if is_local:
                 agent_class, config = manager.load_agent(local=True, path=agent_name)
             else:
@@ -94,7 +94,7 @@ def useFactory(
             return future.result()
         else:
             raise ValueError(f"Process with ID '{process_id}' not found.")
-        
+
 
     return submitAgent, awaitAgentExecution
 
@@ -169,6 +169,6 @@ def useFactory(
 #             return future.result()
 #         else:
 #             raise ValueError(f"Process with ID '{process_id}' not found.")
-        
+
 
 #     return submitAgent, awaitAgentExecution

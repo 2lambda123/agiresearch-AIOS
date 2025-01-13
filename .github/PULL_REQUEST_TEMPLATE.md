@@ -1,4 +1,4 @@
-Thank you for your contribution to AIOS!  
+Thank you for your contribution to AIOS!
 Before submitting the pull request, please **make sure to read and follow requirements below and then you can replace all the texts with your own messages**. This helps improve the efficiency of the review process.
 
 ### Remember to update documentation

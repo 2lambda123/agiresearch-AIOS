@@ -114,7 +114,7 @@ def restart_kernel():
         # 1. Reinitialize LLM component
         llm_config = config.get_llm_config()
         print(f"Got LLM config: {llm_config}")
-        
+
         # Reinitialize LLM
         try:
             llm = useCore(
@@ -125,24 +125,24 @@ def restart_kernel():
                 max_new_tokens=llm_config.get("max_new_tokens", 256),
                 log_mode=llm_config.get("log_mode", "console"),
             )
-            
+
             # Update components
             if llm:
                 # Clean up existing LLM instance if it exists
                 if active_components["llm"]:
                     if hasattr(active_components["llm"], "cleanup"):
                         active_components["llm"].cleanup()
-                
+
                 active_components["llm"] = llm
                 print("✅ LLM core reinitialized with new configuration")
             else:
                 print("⚠️ Failed to initialize LLM core")
-                
+
         except Exception as e:
             print(f"⚠️ Error initializing LLM core: {str(e)}")
-            
+
         print("✅ All components reinitialized successfully")
-        
+
     except Exception as e:
         print(f"❌ Error restarting kernel: {str(e)}")
         print(f"Stack trace: {traceback.format_exc()}")
@@ -159,13 +159,13 @@ async def refresh_configuration():
         restart_kernel()
         print("Kernel restarted")
         return {
-            "status": "success", 
+            "status": "success",
             "message": "Configuration refreshed and components reinitialized"
         }
     except Exception as e:
         print(f"Error during refresh: {str(e)}")
         raise HTTPException(
-            status_code=500, 
+            status_code=500,
             detail=f"Failed to refresh configuration: {str(e)}"
         )
 
@@ -307,7 +307,7 @@ async def setup_scheduler(config: SchedulerConfig):
     try:
         # Set up the scheduler with all components
         scheduler = fifo_scheduler(
-            llm=active_components["llm"],   
+            llm=active_components["llm"],
             memory_manager=active_components["memory"],
             storage_manager=active_components["storage"],
             tool_manager=active_components["tool"],
@@ -349,12 +349,12 @@ async def submit_agent(config: AgentSubmit):
         print(f"\n[DEBUG] ===== Agent Submission =====")
         print(f"[DEBUG] Agent ID: {config.agent_id}")
         print(f"[DEBUG] Task: {config.agent_config.get('task', 'No task specified')}")
-        
+
         _submit_agent = active_components["factory"]["submit"]
         execution_id = _submit_agent(
             agent_name=config.agent_id, task_input=config.agent_config["task"]
         )
-        
+
         return {
             "status": "success",
             "execution_id": execution_id,

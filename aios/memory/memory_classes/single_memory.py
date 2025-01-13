@@ -11,15 +11,15 @@ import zlib
 from threading import Thread
 
 class SingleMemoryManager:
-    def __init__(self, 
-                 memory_limit, 
-                 eviction_k, 
+    def __init__(self,
+                 memory_limit,
+                 eviction_k,
                  storage_manager):
         self.memory_blocks = dict()
         self.memory_limit = memory_limit
         self.eviction_k = eviction_k
         self.storage_manager = storage_manager
-        
+
     def address_request(self, agent_request):
         operation_type = agent_request.operation_type
         if operation_type == "allocate":
@@ -42,7 +42,7 @@ class SingleMemoryManager:
         self.mem_alloc(aid)
         serialized_data = pickle.dumps(s)
         compressed_data = zlib.compress(serialized_data)
-        
+
         if rid in self.memory_blocks[aid]:
             self.memory_blocks[aid].pop(rid)
         self.memory_blocks[aid][rid] = compressed_data
