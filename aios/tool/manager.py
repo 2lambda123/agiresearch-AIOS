@@ -12,7 +12,7 @@ class ToolManager:
         self.tool_conflict_map = {}
 
     def address_request(self, syscall) -> None:
-        
+
         tool_calls = syscall.tool_calls
 
         try:
@@ -31,12 +31,12 @@ class ToolManager:
                     tool_result = tool.run(params=tool_params)
 
                     self.tool_conflict_map.pop(tool_org_and_name)
-                    
+
                     return Response(
                         response_message=tool_result,
                         finished=True
                     )
-                    
+
         except Exception as e:
             return Response(
                 response_message=f"Tool calling error: {e}",
